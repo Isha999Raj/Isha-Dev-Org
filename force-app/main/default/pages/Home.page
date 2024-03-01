@@ -1,0 +1,13 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <apex:stylesheet value="{!$Resource.CustomerPortalCSS}" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.tutorialjinni.com/intl-tel-input/17.0.8/css/intlTelInput.css" />
+  <script src="https://cdn.tutorialjinni.com/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+  <div ng-controller='home_ctrl'>
+    <h1>Congratulations</h1>
+    This is your new Page
+  </div>
+
+</apex:page>

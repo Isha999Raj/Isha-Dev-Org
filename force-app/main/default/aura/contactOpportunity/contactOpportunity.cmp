@@ -1,0 +1,75 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickAction,force:hasRecordId" access="global" 
+                controller="contactOpportunity2">
+    
+    <aura:attribute name ="ConList" type = "Contact[]"/>
+    <aura:attribute name ="OppList" type = "Opportunity[]"/>
+    <aura:attribute name ="isTrueCon" type ="Boolean" default ="true" />
+    <aura:attribute name ="isTrueOpp" type ="Boolean" default ="false" />
+    
+    <lightning:tabset variant="scoped">
+        <lightning:tab onactive = "{!c.showContacts}" label="List Of Contact :">
+            
+            <table class="slds-table slds-table--bordered slds-table--striped slds-table--cell-buffer slds-table--fixed-layout">
+                <thead>
+                    <tr class="slds-text-heading--label">
+                        <th scope="col"><div class="slds-truncate" title="FirstName">First Name</div></th>
+                        <th scope="col"><div class="slds-truncate" title="LastName">Last Name</div></th>
+                        <th scope="col"><div class="slds-truncate" title="Email">Email</div></th>
+                        <th scope="col"><div class="slds-truncate" title="Phone">Phone</div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.ConList}" var="con" indexVar="index">
+                        <tr>
+                            
+                            <td><div class="slds-truncate" title="{!con.FirstName}">{!con.FirstName}</div></td>
+                            
+                            <td><div class="slds-truncate" title="{!con.LastName}">{!con.LastName}</div></td>
+                            
+                            <td><div class="slds-truncate" title="{!con.Email}">{!con.Email}</div></td>
+                            
+                            <td><div class="slds-truncate" title="{!con.Phone}">{!con.Phone}</div></td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table> 
+            
+            <div>
+                <c:contactOpportunityInsert />
+            </div>
+            
+        </lightning:tab>
+        
+        <lightning:tab onactive="{!c.showOpportunity}" label="List Of Opportunity :">
+            
+            <table class="slds-table slds-table--bordered slds-table--striped slds-table--cell-buffer slds-table--fixed-layout">
+                <thead>
+                    <tr class="slds-text-heading--label">
+                        <th scope="col"><div class="slds-truncate" title="Name">Name</div></th>
+                        <th scope="col"><div class="slds-truncate" title="OrderNumber__c">Order Number</div></th>
+                        <th scope="col"><div class="slds-truncate" title="Amount">Amount</div></th>
+                        <th scope="col"><div class="slds-truncate" title="ExpectedRevenue">Expected Revenue</div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.OppList}" var="opp" indexVar="index">
+                        <tr>
+                            <td><div class="slds-truncate" title="{!opp.Name}">{!opp.Name}</div></td>
+                            
+                            <td><div class="slds-truncate" title="{!opp.OrderNumber__c}">{!opp.OrderNumber__c}</div></td>
+                            
+                            <td><div class="slds-truncate" title="{!opp.Amount}">{!opp.Amount}</div></td>
+                            
+                            <td><div class="slds-truncate" title="{!opp.ExpectedRevenue}">{!opp.ExpectedRevenue}</div></td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+            <div>
+                <c:OpportunityInsert />
+            </div>
+            
+        </lightning:tab>  
+    </lightning:tabset>
+    
+</aura:component>

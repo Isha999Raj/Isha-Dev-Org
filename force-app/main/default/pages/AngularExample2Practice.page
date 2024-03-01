@@ -1,0 +1,75 @@
+<apex:page controller="AngularExample2ControllerPractice" standardStyleSheets="false">
+    <html ng-app="app" ng-controller="ctrl">
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"/>
+            <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+        </head>
+        <body class="margin :2%" >
+            <input type="text" id="fx" class="form-control" placeholder="Enter Fax" ng-model="Fax"/>
+            <input type="text" id="nm" class="form-control" placeholder="Enter Name" ng-model="Name"/>
+            <button type="button" ng-click="createAccounts()" class="btn btn-primary">Submit</button>
+            
+            <table class="table-bordered table-striped">
+               <thead>
+                   <th>Id</th>
+                   <th>Fax</th>
+                   <th>Name</th>
+                </thead>
+                <tr ng-repeat="acc in allAccounts">
+                    <td>{{ acc.Id }}</td>
+                    <td>{{ acc.Fax }}</td>
+                    <td>{{ acc.Name }}</td>
+                </tr>
+            </table>
+        </body>
+        <script>
+            var app = angular.module('app',[]);
+            app.controller('ctrl',function($scope){
+                $scope.allAccounts = [];
+                $scope.Fax = '';
+                $scope.Name = '';
+                
+                
+                $scope.getAllAccountJS = function(){
+                    debugger;
+                    Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.AngularExample2ControllerPractice.getAllAccounts}',
+                    
+                    function(result, event){
+                        if (event.status) {
+                            $scope.allAccounts = result;
+                            $scope.$apply();
+                        } else if (event.type === 'exception') {
+                            
+                        } else {
+                            
+                        }
+                    }, 
+                    {escape: true}
+                 );
+            }
+            $scope.getAllAccountJS();
+            $scope.createAccounts = function(){
+               Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.AngularExample2ControllerPractice.createAccount}',
+                    $scope.Fax, $scope.Name, 
+                    function(result, event){
+                        if (event.status) {
+                            $scope.allAccounts.push(result);
+                            $scope.$apply();
+                        } else if (event.type === 'exception') {
+                            
+                        } else {
+                            
+                        }
+                    }, 
+                    {escape: true}
+                 );
+            }   
+           });
+        </script>
+    </html>
+</apex:page>

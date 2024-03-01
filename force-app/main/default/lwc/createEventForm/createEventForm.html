@@ -1,0 +1,173 @@
+<template>
+    <div style="margin-left: 25%;margin-right: 25%;">
+       <div style="margin-top: 4%; text-align: center;">
+            <h1 class="centered-heading">Create <b style="color:#6889ff;">One-on-One</b> Event Type</h1>
+            <div></div>
+        </div>
+
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+        <template if:false={isLoading}>
+            <div style="" class="contentHolder">
+                <div class="slds-grid slds-gutters" style="margin-top: 2%">
+                    <div class="slds-col">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-id-47">
+                              <abbr class="slds-required" title="required">* </abbr><b>Event Name</b> </label>
+                            <div class="slds-form-element__control">
+                              <input type="text" id="text-input-id-47" name="Name" placeholder="Event Name" required="" class="slds-input inputFields" onchange={inputHandler}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col" style="margin-left:10%;">
+                        <lightning-combobox 
+                            name="Slot_Duration__c"
+                            label="Slot Duration"
+                            value={eventForm.Slot_Duration__c}
+                            placeholder="Select Slot Duration" options={fieldValues.Slot_Duration__c}
+                            onchange={inputHandler}
+                            style="font-weight:bold;" class="inputFields custom-combobox">
+                        </lightning-combobox>
+    
+                    </div>
+                </div>
+
+                <div class="slds-grid slds-gutters" style="margin-top: 2%">
+                    <div class="slds-col">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-id-47">
+                              <abbr class="slds-required" title="required">* </abbr><b>Event Start Date</b> </label>
+                            <div class="slds-form-element__control">
+                              <input type="date" id="text-input-id-50" name="Event_Start_Date__c" placeholder="Select Start Date" required="" class="slds-input inputFields" onchange={inputHandler} value={today}/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-col" style="margin-left:10%">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-id-47">
+                              <abbr class="slds-required" title="required">* </abbr><b>Event End Date</b> </label>
+                            <div class="slds-form-element__control">
+                              <input type="date" id="text-input-id-51" name="Event_End_Date__c" placeholder="Select End Date" required="" class="slds-input inputFields" onchange={inputHandler} value={dateOneYearFromNow}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="slds-grid slds-gutters" style="margin-top: 2%">
+                    <div class="slds-col">
+                        <lightning-combobox 
+                            name="Before_Gap__c"
+                            label="Before Gap"
+                            value={eventForm.Before_Gap__c}
+                            placeholder="Select Before Gap" options={fieldValues.Before_Gap__c}
+                            onchange={inputHandler}
+                            style="font-weight:bold;" class="inputFields"
+                            >
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col" style="margin-left:10%">
+                        <lightning-combobox 
+                            name="After_Gap__c"
+                            label="After Gap"
+                            value={eventForm.After_Gap__c}
+                            placeholder="Select After Gap" options={fieldValues.After_Gap__c}
+                            onchange={inputHandler}
+                            style="font-weight:bold;" class="inputFields">
+                        </lightning-combobox>
+                    </div>
+                </div>
+        
+                <div class="slds-grid slds-gutters" style="margin-top: 2%">
+                    <div class="slds-col">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-id-47">
+                              <abbr class="slds-required" title="required">* </abbr><b>Start Time</b></label>
+                            <div class="slds-form-element__control">
+                              <input type="time" id="text-input-id-48" name="Start_Time__c" placeholder="Start Time" required="" class="slds-input inputFields" onchange={inputHandler} value={startTime}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col" style="margin-left:10%">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-id-47">
+                              <abbr class="slds-required" title="required">* </abbr><b>End Time</b></label>
+                            <div class="slds-form-element__control ">
+                              <input type="time" id="text-input-id-49" name="End_Time__c" placeholder="End Time" required="" class="slds-input inputFields" onchange={inputHandler} value={endTime}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slds-grid slds-gutters" style="margin-top: 2%">
+                    <div class="slds-col">
+                        <div class="slds-form-element">
+                            <!--label class="slds-form-element__label" for="text-input-id-47">
+                                <abbr class="slds-required" title="required">* </abbr><b>Appointment Type</b></label-->
+                                <div class="slds-form-element__control">
+                                    <lightning-combobox
+                                    name="Appointment_Type__c"
+                                    options={roleOptions}
+                                    onchange={inputHandler}
+                                    label="Appointment Type"
+                                    required
+                                    style="font-weight:bold;" class="inputFields">
+                                </lightning-combobox>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="slds-col" style="margin-left:10%">
+                            <div class="slds-form-element">
+                                    <label class="slds-form-element__label" for="text-input-id-47">
+                                        <abbr class="slds-required" title="required">* </abbr><b>Occurences</b>
+                                    </label>
+                                    <div>
+                                         <button class="slds-button slds-button_neutral black-label-button" style="width: 330px;" onclick={toggleCheckboxCard}>
+                                            Select Occurrence
+                                            <lightning-icon icon-name="utility:down" size="x-small" class="slds-m-left_x-small"></lightning-icon>
+                                        </button>
+                                    </div>
+        
+                                <!-- Checkboxes card -->
+                                <div if:true={showCheckboxes} class="checkbox-card">
+                                    <template for:each={fieldValues.Occurence__c} for:item="option">
+                                        <div key={option.value} class="checkbox-item">
+                                            <input
+                                                type="checkbox"
+                                                value={option.value}
+                                                checked={option.selected}
+                                                onchange={handleCheckboxChange}
+                                                style="margin-right:1%; padding: 10px 0px"
+                                            />
+                                            {option.label}
+                                        </div>
+                                    </template>
+                                     <div class="slds-grid slds-gutters slds-align_absolute-center" style="margin-top: 10px; margin-bottom:5px">
+                                        <div class="slds-col">
+                                            <lightning-button label="Cancel" variant="neutral" onclick={handleCancelClick}></lightning-button>
+                                        </div>
+                                        <div class="slds-col">
+                                            <lightning-button label="Confirm" variant="brand" onclick={handleConfirmClick}></lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                
+        
+                            </div>
+        
+                    </div>
+                </div>
+
+               
+            </div>
+        </template>
+        <div style="margin-top: 2%;text-align:center;">
+            <button onclick={backHandler} class="backbutton">Back</button>
+            <button onclick={createNewEvent} class="createEventButton" style="margin-left: 25px;min-width: 139.703px;">Create Event</button>
+        </div> 
+    </div>
+    <!-- <c-custom-toast></c-custom-toast> -->
+</template>

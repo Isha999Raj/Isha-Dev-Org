@@ -1,0 +1,199 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="GetAppointmentController">
+    <aura:attribute name="appList" type="Appointment__c[]"/>
+    <aura:attribute name="contactId" type="String" default="0035j00001OSOkeAAH"/>
+    <aura:attribute name="newAppointment" type="Object" default="{ 'sobjectType': 'Appointment__c' }" />
+    <aura:attribute name="showModal" type="Boolean" default="false" />
+    <aura:attribute name="pageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="isLastPage" type="Boolean" default="false"/>
+    <aura:attribute name="dataSize" type="Integer" default="0"/>
+    <aura:attribute name="selectedAppointment" type="Appointment__c"/>
+    <aura:attribute name="isModalOpen" type="Boolean" default="false"/>
+    <aura:attribute name="filterType" type="String" default="Today"/>
+    <aura:attribute name="startDate" type="Date" />
+    <aura:attribute name="endDate" type="Date" />
+    <aura:attribute name="picklistValues" type="String[]" />
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <div>
+    
+    <!--Tab-->
+    <lightning:tabset selectedTabId="two">
+        <lightning:tab label="Home" id="one">
+            One Home !
+        </lightning:tab>
+        <lightning:tab label="Appointment" id="two">
+            <!-- Table to display appointments -->
+            <!--Component Start-->
+            <div class="slds-m-around--xxx-madium">               
+                <!-- Date Picker -->
+                <div>
+                    <lightning:select name="filterType" label="Filter By:" aura:id="filterType" onchange="{!c.handleFilterChange}">
+                        <option value="Today" selected="{!v.filterType == 'Today'}">Today's Appointments</option>
+                        <option value="Custom" selected="{!v.filterType == 'Custom Date'}">Custom Date</option>
+                    </lightning:select>
+                </div>
+                
+                <aura:if isTrue="{!v.filterType == 'Custom Date'}">
+                    <div>
+                        <lightning:input type="date" name="startDate" label="Start Date" value="{!v.startDate}" />
+                        <lightning:input type="date" name="endDate" label="End Date" value="{!v.endDate}" />
+                    </div>
+                </aura:if>
+                <!-- Date Picker -->
+                <div style="margin-bottom:1%;">
+                    <lightning:input type="date" name="appointmentDate" label="Select Appointment Date" aura:id="datePicker" onchange="{!c.handleDateChange}"/>
+                </div>
+                <div style="display:flow-root;">
+                    <div>Appointment</div>
+                    <div style="float: right; margin-top:-2%;margin-bottom:1%;">
+                        <lightning:button variant="brand" label="New Appointment" onclick="{!c.openBookingAppo}" />
+                    </div>
+                    
+                </div>
+                <lightning:card>
+                    
+                    <aura:set attribute="footer">
+                        <div class="slds-align_absolute-center"> 
+                            <div class="slds-p-right_xx-small">
+                                <lightning:button label="Prev"
+                                                  onclick="{!c.handlePrev}"
+                                                  disabled="{! v.pageNumber == 1}"
+                                                  variant="brand"
+                                                  iconName="utility:back"
+                                                  name="prev"/>
+                            </div>
+                            <span class="slds-badge slds-badge_lightest">
+                                Page {!v.pageNumber} | Showing records from {! ((v.pageNumber-1)*v.pageSize)+' to '+((v.pageNumber-1)*v.pageSize+v.dataSize)}
+                            </span>
+                            <div class="slds-p-left_xx-small">
+                                <lightning:button label="Next"
+                                                  disabled="{!v.isLastPage}"
+                                                  onclick="{!c.handleNext}"
+                                                  variant="brand"
+                                                  iconName="utility:forward"
+                                                  iconPosition="right"
+                                                  name="next"/>
+                            </div>
+                        </div>  
+                        
+                    </aura:set>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <thead>
+                            <tr class="slds-line-height_reset slds-text-title_caps">
+                                <th  class="slds-is-resizable" scope="col">
+                                    <div class="slds-truncate" title="Name">
+                                        Name
+                                    </div>
+                                </th>
+                                <th  class="slds-is-resizable" scope="col">
+                                    <div class="slds-truncate" title="Account Number">
+                                        Appointment Date
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable" scope="col">
+                                    <div class="slds-truncate" title="Subject">
+                                        Subject
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable" scope="col">
+                                    <div class="slds-truncate" title="Description">
+                                        Description
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <aura:if isTrue="{!v.appList.length > 0}">
+                            <tbody>
+                                <aura:iteration items="{!v.appList}" var="app">
+                                    <tr class="slds-hint-parent">
+                                        
+                                        <th data-label="Name" scope="row">
+                                            <div class="slds-truncate" title="{!app.Name}">
+                                                <a href="javascript:void(0);" onclick="{!c.openModal}" data-id="{!app.Id}">
+                                                    {!app.Name}
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <td data-label="Appointment Date">
+                                            <div class="slds-truncate" title="{!app.Appointment_Date_and_Time__c}">
+                                                <lightning:formattedDateTime value="{!app.Appointment_Date_and_Time__c}" year="numeric" month="numeric" day="numeric"/>
+                                            </div>
+                                        </td>
+                                        <td data-label="Subject">
+                                            <div class="slds-truncate" title="{!app.Subject__c}">{!app.Subject__c}</div>
+                                        </td>
+                                        <td data-label="Description">
+                                            <div class="slds-truncate" title="{!app.Description__c}">{!app.Description__c}</div>
+                                        </td>
+                                        
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </aura:if>
+                    </table>
+                    <aura:if isTrue="{!empty(v.appList)}">
+                        <div class="slds-align_absolute-center">
+                            No records found
+                        </div>
+                    </aura:if>
+                </lightning:card>
+            </div>
+            <!--Component End-->
+            
+            <!-- Modal Popup For Appointment Details-->
+            <aura:if isTrue="{!v.isModalOpen}">
+                <div role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <!-- Modal/Popup Box LWC header -->
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close" onclick="{!c.closeModal}" alternativeText="close" variant="bare-inverse" class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Appointment Details</h2>
+                        </header>
+                        <!-- Modal/Popup Box LWC body -->
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <p>Name: {!v.selectedAppointment.Name}</p>
+                            <p>Appointment Date: <lightning:formattedDateTime value="{!v.selectedAppointment.Appointment_Date_and_Time__c}" year="numeric" month="numeric" day="numeric"/></p>
+                            <p>Subject: {!v.selectedAppointment.Subject__c}</p>
+                            <p>Description: {!v.selectedAppointment.Description__c}</p>
+                            <!-- Add other fields here as needed -->
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
+            
+            <!-- Modal popup For New Appointment Booking-->
+            <aura:if isTrue="{!v.showModal}">
+                <div class="modalBackdrop slds-backdrop slds-backdrop_open"></div>
+                <div class="modalContainer slds-modal slds-fade-in-open">
+                    <div class="slds-modal__header">
+                        <h2 class="slds-text-heading_medium">New Appointment</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <!-- Add your form fields here to capture appointment details -->
+                        <lightning:input  label="Subject" value="{!v.newAppointment.Subject__c}" />
+                        <lightning:input  label="Description" value="{!v.newAppointment.Description__c}" />
+                        <lightning:select label="Type" value="{!v.newAppointment.Type__c}">
+                            <aura:iteration items="{!v.picklistValues}" var="val">
+                                <option text="{!val}" value="{!val}" />
+                            </aura:iteration>
+                        </lightning:select>
+                        <!--lightning:input label="Date and Time" type="datetime-local" value="{!v.newAppointment.Appointment_Date_and_Time__c}" /-->
+                        
+                    </div>
+                    <div class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick="{!c.closeModal}">Cancel</button>
+                        <button class="slds-button slds-button_brand" onclick="{!c.saveAppointment}">Save</button>
+                    </div>
+                </div>
+            </aura:if>
+            
+        </lightning:tab>
+        <lightning:tab label="Case" id="three">
+            Three Case !
+        </lightning:tab>
+    </lightning:tabset>
+        </div>
+</aura:component>

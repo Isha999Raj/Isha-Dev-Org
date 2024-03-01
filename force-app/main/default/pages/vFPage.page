@@ -1,0 +1,15 @@
+<apex:page controller="vFClass">
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!accRec}" var="acc">
+            <apex:column value="{!acc.Name}"/>
+            <apex:column value="{!acc.id}"/>
+            <apex:column value="{!acc.Industry}"/>
+        </apex:pageBlockTable>
+        
+        <apex:pageBlockTable value="{!accRec2}" var="acc2">
+            <apex:column value="{!acc2.Name}"/>
+            <apex:column value="{!acc2.id}"/>
+            <apex:column value="{!acc2.Industry}"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

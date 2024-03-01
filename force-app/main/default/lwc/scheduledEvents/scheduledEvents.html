@@ -1,0 +1,152 @@
+<template>
+    <div class="container">
+        <div style="text-align:center;padding-top:1%;">
+            <label class="header"><b>FILTER CRITERIA :</b></label>
+            <div class="slds-grid slds-gutters" style="margin-top:1%;margin-left: 1%;margin-right: 1%;">
+                <div class="slds-col"><span></span></div>
+                <div class="slds-col"><span></span></div>
+                <div class="slds-col"><span></span></div>
+                <div class="slds-col">
+                    <label class="color-theme2"><b>Start Date</b></label>
+                    <span><input type="date" class="form-control" id="startDate" name="startDateInput" value={selectedDate} onchange={handleDateChange}></input></span>
+                    <br/>
+                    <br/>
+                    <label class="color-theme2"><b>Start Time</b></label>
+                    <span><input type="time" class="form-control" id="starttime" name="starttimeInput" value={selectedTime} onchange={handleTimeChange}></input></span>
+                </div>
+                <!--div class="slds-col">
+                    <label class="color-theme2"><b>Start Time</b></label>
+                    <span><input type="datetime-local" class="form-control" id="starttime" name="starttimeInput" value={selectedTime} onchange={handleTimeChange}></input></span>
+                </div-->
+                <div class="slds-col">
+                    <label class="color-theme2"><b>End Date</b></label>
+                    <span><input type="date" class="form-control" id="endDate" name="endDateInput" value={selectedDate} onchange={handleDateChange}></input></span>
+                    <br/><br/>
+                    <label class="color-theme2"><b>End Time</b></label>
+                    <span><input type="time" class="form-control" id="endtime" name="endtimeInput" value={selectedTime} onchange={handleTimeChange}></input></span>
+                </div>
+                <!--div class="slds-col">
+                    <label class="color-theme2"><b>End Time</b></label>
+                    <span><input type="datetime-local" class="form-control" id="endtime" name="endtimeInput" value={selectedTime} onchange={handleTimeChange}></input></span>
+                </div-->
+                
+                
+                <div class="slds-col"><span><button class="slds-button startMeetButton" onclick={filterBookedSlots}><b>Apply Filter</b></button></span>
+                <span><button class="slds-button clearfilterbutton" style="margin-left:5%;" onclick={clearFilters}><b>Clear All Filters</b></button></span></div>
+                <div class="slds-col"><span></span></div>
+                <div class="slds-col"><span></span></div>
+            </div>
+        </div>
+            <table class="table" style="padding-left:1%;padding-right:1%">
+                <thead>
+                    <tr>
+                        <th class="color-theme" style="width: 10%">Start Time</th>
+                        <th class="color-theme" style="width: 10%">End Time</th>
+                        <th class="color-theme" style="width: 15%">Agenda</th>
+                        <th class="color-theme" style="width: 10%;min-width: 8vw;">Lead Name</th>
+                        <th class="color-theme" style="width: 10%">Email</th>
+                        <th class="color-theme" style="width: 10%">Phone</th>
+                        <th class="color-theme" style="width: 10%">Status</th>
+                        <th class="color-theme" style="width: 25%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={filteredBookedSlots} for:item="singleBookSlotRec">
+                        <tr key={singleBookSlotRec.Id}>
+                            <td><div style="width: max-content;"><lightning-formatted-date-time
+                                    value={singleBookSlotRec.Start_Time__c}
+                                    hour="2-digit"
+                                    minute="2-digit">
+                                </lightning-formatted-date-time></div></td>
+                            <td><div style="width: max-content;"><lightning-formatted-date-time
+                                    value={singleBookSlotRec.End_Time__c}
+                                    hour="2-digit"
+                                    minute="2-digit">
+                                </lightning-formatted-date-time></div></td>
+                            <td><div style="width: max-content; max-width:40vh;">{singleBookSlotRec.Meeting_Description__c}</div></td>
+                            <td>{singleBookSlotRec.Name}</td>
+                            <td>{singleBookSlotRec.Email__c}</td>
+                            <td>9599836568</td>
+                            <td>
+                                <div class={singleBookSlotRec.styleClass}>{singleBookSlotRec.Status__c}</div>
+                            </td>
+                            <td>
+                                <div style="width:100%; max-height:300px; overflow:auto; display:flex;">
+                                <button disabled={singleBookSlotRec.startMeet} class={singleBookSlotRec.styleClassStartMeet} data-record-id={singleBookSlotRec.Id} onclick={handleOpenLink} value={singleBookSlotRec.Meeting_Link__c}>Start Meeting</button>&nbsp;&nbsp;
+                                <button disabled={singleBookSlotRec.accepetd} class={singleBookSlotRec.styleClassAccepted} data-record-id={singleBookSlotRec.Id} data-value="Accepted" onclick={onClickOfAcceptReject}>Accept</button>&nbsp;&nbsp;
+                                <button disabled={singleBookSlotRec.rejected} class={singleBookSlotRec.styleClassRejected} data-record-id={singleBookSlotRec.Id} data-value="Rejected" onclick={onClickOfAcceptReject}>Reject</button>&nbsp;&nbsp;
+                                <button disabled={singleBookSlotRec.reschedule} class={singleBookSlotRec.styleClassReschedule} data-record-id={singleBookSlotRec.Id} onclick={openPopUp}>Ask For Reschedule</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+
+            <template if:true={isModalOpen}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close"
+                                alternative-text="close"
+                                variant="inverse"
+                                size="small" ></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Reschedule Meeting</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <!-- -->
+                        <div class="slds-grid slds-gutters" style="margin-top: 2%">
+                    <div class="slds-col">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-id-47">
+                              <abbr class="slds-required" title="required">* </abbr><b>Event Date</b> </label>
+                            <div class="slds-form-element__control">
+                              <input type="date" id="text-input-id-50" name="Date__c" placeholder="Select Date" required="" class="slds-input inputFields" onchange={inputHandler}/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="slds-grid slds-gutters" style="margin-top: 2%">
+                    <div class="slds-col" style="">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-id-47">
+                              <abbr class="slds-required" title="required">* </abbr><b>Start Time</b> </label>
+                            <div class="slds-form-element__control">
+                              <input type="time" id="text-input-id-51" name="Start_Time__c" placeholder="Select Start Time" required="" class="slds-input inputFields" onchange={inputHandler}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col" style="">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-id-47">
+                              <abbr class="slds-required" title="required">* </abbr><b>End Time</b> </label>
+                            <div class="slds-form-element__control">
+                              <input type="time" id="text-input-id-52" name="End_Time__c" placeholder="Select End Time" required="" class="slds-input inputFields" onchange={inputHandler}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- -->
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">Cancel</button>
+                        <lightning-button label="Submit"
+                         onclick={rescheduleMeeting} title="Submit"></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+
+            <div class="slds-p-around_small">
+            <c-custom-pagination list={filteredBookedSlots} onpagechanged={paginationCallback}></c-custom-pagination>
+            </div>
+    </div>
+</template>

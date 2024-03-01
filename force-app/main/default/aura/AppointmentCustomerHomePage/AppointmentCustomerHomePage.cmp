@@ -1,0 +1,402 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="getDashboardMetricsForContact">
+    <aura:attribute name="recordId" type="String" default="0035j00001OSOkeAAH"/>
+    
+    <aura:attribute name="appList" type="Appointment__c[]"/>
+    <aura:attribute name="TotalAppList" type="Appointment__c[]"/>
+    <aura:attribute name="inProgressAppList" type="Appointment__c[]"/>
+    <aura:attribute name="upComingAppList" type="Appointment__c[]"/>
+    <aura:attribute name="cancelledAppList" type="Appointment__c[]"/>
+
+    <aura:attribute name="caseList" type="Case__c[]"/>
+    <aura:attribute name="TotalCaseList" type="Case__c[]"/>
+    <aura:attribute name="ResolvedCaseList" type="Case__c[]"/>
+    <aura:attribute name="PendingCaseList" type="Case__c[]"/>
+    <aura:attribute name="escaletedCaseList" type="Case__c[]"/>
+    
+    <aura:attribute name="questionsAndAnswers" type="List" default="[]"/>
+    <aura:attribute name="contactUs" type="Contact_Us__mdt"/>
+    <aura:attribute name="pageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="isLastPage" type="Boolean" default="false"/>
+    <aura:attribute name="dataSize" type="Integer" default="0"/>
+    <aura:attribute name="metrics" type="DashboardMetricsWrapper"/>
+    <aura:attribute name="siteURL" type="String"/>
+    <aura:attribute name="CurrentDataStatusvalue" type="string" default="AllData"/>
+    
+    <aura:handler  name="init" value="{!this}" action="{!c.doinit}"/>
+    
+    <aura:attribute name="showMainHome" type="boolean" default="false"/> 
+    <aura:attribute name="showTotalAppointment" type="boolean" default="false"/> 
+    
+    <aura:if isTrue="{!v.showMainHome}">
+        
+        <div class="master" style="background-color: aliceblue;border-radius: 5px;padding: 1%;">
+            <div class="notification">
+                <!--lightning:buttonIcon iconName="utility:notification" variant="brand" alternativeText="Settings" title="Settings" /-->
+                
+            </div>
+            <div class="">
+                <h2 class="Title">Dashboard</h2>
+                <div class="outer-container">
+                    <div class="c-container">
+                        <lightning:layout multipleRows="true">
+                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                                <div class="slds-card">
+                                    <header class="slds-card__header">
+                                        <h2 class="slds-text-heading_small slds-truncate">Total Appointment</h2>
+                                    </header>
+                                    <div class="slds-card__body">
+                                        <a onclick="{!c.navigateToComponent}" data-status="TotalAppointment" class="clickable-text">{!v.metrics.totalAppointments}</a>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                                <div class="slds-card">
+                                    <header class="slds-card__header">
+                                        <h2 class="slds-text-heading_small slds-truncate">In Progress Appointment</h2>
+                                    </header>
+                                    <div class="slds-card__body">
+                                        <!--a onclick="{!c.navigateToComponent}" data-status="InProgress" class="clickable-text">{!v.metrics.inProgressAppointments}</a-->
+                                        <a onclick="{!c.navigateToComponent}" data-status="InProgress" class="clickable-text">{!v.metrics.inProgressAppointments}</a>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                                <div class="slds-card">
+                                    <header class="slds-card__header">
+                                        <h2 class="slds-text-heading_small slds-truncate">Upcoming Appointment</h2>
+                                    </header>
+                                    <div class="slds-card__body">
+                                        <a onclick="{!c.navigateToComponent}" data-status="Upcoming" class="clickable-text">{!v.metrics.upcomingAppointments}</a>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                                <div class="slds-card">
+                                    <header class="slds-card__header">
+                                        <h2 class="slds-text-heading_small slds-truncate">Cancelled/Rescheduled Appointment</h2>
+                                    </header>
+                                    <div class="slds-card__body">
+                                        <a onclick="{!c.navigateToComponent}" data-status="CancelledOrRescheduled" class="clickable-text">{!v.metrics.cancelledOrRescheduledAppointments}</a>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <!--lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                                <div class="slds-card">
+                                    <header class="slds-card__header">
+                                        <h2 class="slds-text-heading_small slds-truncate">Total Case</h2>
+                                    </header>
+                                    <div class="slds-card__body">
+                                        <a onclick="{!c.navigateToComponent}" data-status="TotalCases" class="clickable-text">{!v.metrics.totalCases}</a>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                                <div class="slds-card">
+                                    <header class="slds-card__header">
+                                        <h2 class="slds-text-heading_small slds-truncate">Resolved Case</h2>
+                                    </header>
+                                    <div class="slds-card__body">
+                                        <a onclick="{!c.navigateToComponent}" data-status="ResolvedCases" class="clickable-text">{!v.metrics.resolvedCases}</a>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                                <div class="slds-card">
+                                    <header class="slds-card__header">
+                                        <h2 class="slds-text-heading_small slds-truncate">Pending Case</h2>
+                                    </header>
+                                    <div class="slds-card__body">
+                                        <a onclick="{!c.navigateToComponent}" data-status="PendingCases" class="clickable-text">{!v.metrics.pendingCases}</a>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                                <div class="slds-card">
+                                    <header class="slds-card__header">
+                                        <h2 class="slds-text-heading_small slds-truncate">Escalated Case</h2>
+                                    </header>
+                                    <div class="slds-card__body">
+                                        <a onclick="{!c.navigateToComponent}" data-status="EscalatedCases" class="clickable-text">{!v.metrics.escalatedCases}</a>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem-->
+                        </lightning:layout>
+                    </div>
+                </div>
+            </div>
+            
+            <!--Document Status-->
+            <!--div class="">
+                <h2 class="Title">Document Status</h2>
+                <div class="outer-container">
+                    <div class="slds-card">
+                        <header class="slds-card__header">
+                            <h2 class="slds-text-heading_small slds-truncate">Appointment Document Status</h2>
+                        </header>
+                        <div class="slds-card__body">
+                            
+                            <iframe src="{!v.siteURL}" width="100%" height="400px;"/>
+                        </div>
+                    </div>
+                </div>
+            </div-->
+            
+            <!--Appointment History-->
+            <div class="">
+                <h2 class="Title">Appointment History</h2>
+                <div class="outer-container">
+                    <div class="table" style="">
+                        <!--header class="slds-card__header">
+                        <h2 class="slds-text-heading_small slds-truncate">Appointment History</h2>
+                    </header-->
+                        <div class="slds-card__body">
+                            
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                <thead>
+                                    <tr class="slds-line-height_reset slds-text-title_caps">
+                                        <th  class="slds-is-resizable custom-th" scope="col">
+                                            <div class="slds-truncate" title="Name">
+                                                Name
+                                            </div>
+                                        </th>
+                                        <th  class="slds-is-resizable custom-th" scope="col">
+                                            <div class="slds-truncate" title="Account Number">
+                                                Appointment Date
+                                            </div>
+                                        </th>
+                                        <th class="slds-is-resizable custom-th" scope="col">
+                                            <div class="slds-truncate" title="Subject">
+                                                Status
+                                            </div>
+                                        </th>
+                                        <th class="slds-is-resizable custom-th" scope="col">
+                                            <div class="slds-truncate" title="Subject">
+                                                Subject
+                                            </div>
+                                        </th>
+                                        <th class="slds-is-resizable custom-th" scope="col">
+                                            <div class="slds-truncate" title="Description">
+                                                Description
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <aura:if isTrue="{!v.appList.length > 0}">
+                                    <tbody>
+                                        <aura:iteration items="{!v.appList}" var="app">
+                                            <tr class="slds-hint-parent">
+                                                
+                                                <th data-label="Name" scope="row" >
+                                                    <div class="slds-truncate" title="{!app.Name}">
+                                                        <div class="slds-truncate" title="{!app.Subject__c}">
+                                                            {!app.Name}
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td data-label="Appointment Date" style="text-align:center;">
+                                                    <div class="slds-truncate" title="{!app.Appointment_Date_and_Time__c}">
+                                                        <lightning:formattedDateTime value="{!app.Appointment_Date_and_Time__c}" year="numeric" month="numeric" day="numeric"/>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Subject" style="text-align: center;">
+                                                    <div class="slds-truncate" title="{!app.Appointment_Status__c}">{!app.Appointment_Status__c}</div>
+                                                </td>
+                                                <td data-label="Subject" >
+                                                    <div class="slds-truncate" title="{!app.Subject__c}">{!app.Subject__c}</div>
+                                                </td>
+                                                <td data-label="Description">
+                                                    <div class="slds-truncate" title="{!app.Description__c}" style="white-space: break-spaces;">{!app.Description__c}</div>
+                                                </td>
+                                                
+                                            </tr>
+                                        </aura:iteration>
+                                    </tbody>
+                                </aura:if>
+                            </table>
+                            <div class="slds-align_absolute-center" style="margin-top:0.5%;"> 
+                                <div class="slds-p-right_xx-small">
+                                    <lightning:button label="Prev"
+                                                      onclick="{!c.handlePrev}"
+                                                      disabled="{! v.pageNumber == 1}"
+                                                      variant="brand"
+                                                      iconName="utility:back"
+                                                      name="prev"/>
+                                </div>
+                                <span class="slds-badge slds-badge_lightest">
+                                    Page {!v.pageNumber} | Showing records from {! ((v.pageNumber-1)*v.pageSize+1)+' to '+((v.pageNumber-1)*v.pageSize+v.dataSize)}
+
+                                </span>
+                                <div class="slds-p-left_xx-small">
+                                    <lightning:button label="Next"
+                                                      disabled="{!v.isLastPage}"
+                                                      onclick="{!c.handleNext}"
+                                                      variant="brand"
+                                                      iconName="utility:forward"
+                                                      iconPosition="right"
+                                                      name="next"/>
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--Help & FAQ-->
+            <div class="">
+                <h2 class="Title">Help And FAQ</h2>
+                <div class="outer-container">
+                    <div class="slds-card">
+                        <lightning:accordion allowMultipleSectionsOpen="true">
+                            <aura:iteration items="{!v.questionsAndAnswers}" var="qa">
+                                <!-- Accordion section -->
+                                <lightning:accordionSection name="{!qa.Question__c}" label="{!qa.Question__c}" class="slds-text-heading_medium " >
+                                    <!-- Answer content -->
+                                    <aura:set attribute="body">
+                                        <p style="font-size: 85%;margin-left: 2%;width: 97%;">{!qa.Answer__c}</p>
+                                    </aura:set>
+                                </lightning:accordionSection>
+                            </aura:iteration>
+                        </lightning:accordion>
+                    </div>
+                </div>
+            </div>
+            
+            <!--Contact Us-->
+            <div class="">
+                <h2 class="Title">Contact Us</h2>
+                <div class="outer-container">
+                    <div class="slds-card">
+                        <div style="display:inline-flex;margin-left: 1%;">
+                        	<div style="font-size: 120%;font-weight: bold;">Email&nbsp;:&nbsp;</div>
+                            <div style="font-size: 120%;margin-left: 1%;">{!v.contactUs.Email__c}</div>
+                        </div><br/>
+                        <div style="display:inline-flex;margin-left: 1%;">
+                        	<div style="font-size: 120%;font-weight: bold;">Phone&nbsp;:&nbsp;</div>
+                            <div style="font-size: 120%;margin-left: 1%;">{!v.contactUs.Phone__c}</div>
+                        </div><br/>
+                        <div style="display:inline-flex;margin-left: 1%;">
+                        	<div style="font-size: 120%;font-weight: bold;">Address&nbsp;:&nbsp;</div>
+                            <div style="font-size: 120%;margin-left: 1%;width: 32vw;">{!v.contactUs.Address__c}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.showTotalAppointment}">
+        <!--Appointment History-->
+            <div class="master" style="background-color: aliceblue;border-radius: 5px;padding: 1%;">
+                <lightning:button label="Back"
+                                                      
+                                                      onclick="{!c.backButton}"
+                                                      variant="brand"
+                                                      iconName="utility:back"
+                                                      iconPosition="left"
+                                                      name="Back"/>
+                <h2 class="Title">Appointment History</h2>
+                
+                <div class="outer-container">
+                    <div class="slds-card">
+                        <!--header class="slds-card__header">
+                        <h2 class="slds-text-heading_small slds-truncate">Appointment History</h2>
+                    </header-->
+                        <div class="table">
+                        
+                        <div class="slds-card__body">
+                            
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                <thead>
+                                    <tr class="slds-line-height_reset slds-text-title_caps">
+                                        <th  class="slds-is-resizable custom-th" scope="col">
+                                            <div class="slds-truncate" title="Name">
+                                                Name
+                                            </div>
+                                        </th>
+                                        <th  class="slds-is-resizable custom-th" scope="col">
+                                            <div class="slds-truncate" title="Account Number">
+                                                Appointment Date
+                                            </div>
+                                        </th>
+                                        <th class="slds-is-resizable custom-th" scope="col">
+                                            <div class="slds-truncate" title="Subject">
+                                                Status
+                                            </div>
+                                        </th>
+                                        <th class="slds-is-resizable custom-th" scope="col">
+                                            <div class="slds-truncate" title="Subject">
+                                                Subject
+                                            </div>
+                                        </th>
+                                        <th class="slds-is-resizable custom-th" scope="col">
+                                            <div class="slds-truncate" title="Description">
+                                                Description
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <aura:if isTrue="{!v.appList.length > 0}">
+                                    <tbody>
+                                        <aura:iteration items="{!v.appList}" var="app">
+                                            <tr class="slds-hint-parent">
+                                                
+                                                <th data-label="Name" scope="row">
+                                                    <div class="slds-truncate" title="{!app.Name}">
+                                                        <div class="slds-truncate" title="{!app.Subject__c}">
+                                                            {!app.Name}
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td data-label="Appointment Date" style="text-align: center;">
+                                                    <div class="slds-truncate" title="{!app.Appointment_Date_and_Time__c}">
+                                                        <lightning:formattedDateTime value="{!app.Appointment_Date_and_Time__c}" year="numeric" month="numeric" day="numeric"/>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Subject" style="text-align: center;">
+                                                    <div class="slds-truncate" title="{!app.Appointment_Status__c}">{!app.Appointment_Status__c}</div>
+                                                </td>
+                                                <td data-label="Subject">
+                                                    <div class="slds-truncate" title="{!app.Subject__c}">{!app.Subject__c}</div>
+                                                </td>
+                                                <td data-label="Description">
+                                                    <div class="slds-truncate" title="{!app.Description__c}" style="white-space: break-spaces;">{!app.Description__c}</div>
+                                                </td>
+                                                
+                                            </tr>
+                                        </aura:iteration>
+                                    </tbody>
+                                </aura:if>
+                            </table>
+                            <div class="slds-align_absolute-center" style="margin-top:0.5%;"> 
+                                <div class="slds-p-right_xx-small">
+                                    <lightning:button label="Prev"
+                                                      onclick="{!c.handlePrev}"
+                                                      disabled="{! v.pageNumber == 1}"
+                                                      variant="brand"
+                                                      iconName="utility:back"
+                                                      name="prev"/>
+                                </div>
+                                <span class="slds-badge slds-badge_lightest">
+                                    Page {!v.pageNumber} | Showing records from {! ((v.pageNumber-1)*v.pageSize+1)+' to '+((v.pageNumber-1)*v.pageSize+v.dataSize)}
+
+                                </span>
+                                <div class="slds-p-left_xx-small">
+                                    <lightning:button label="Next"
+                                                      disabled="{!v.isLastPage}"
+                                                      onclick="{!c.handleNext}"
+                                                      variant="brand"
+                                                      iconName="utility:forward"
+                                                      iconPosition="right"
+                                                      name="next"/>
+                                </div>
+                            </div>  
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </aura:if>
+    
+</aura:component>

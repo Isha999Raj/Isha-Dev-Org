@@ -1,0 +1,39 @@
+<apex:page controller="AccountRemoteActionController">
+    <script>
+    function getAccountJS(){
+        var accountNameJS = document.getElementById('accName').value;
+        AccountRemoteActionController.getAccount(accountNameJS,
+                                                 function(result, event){
+                                                     if(event.status){
+                                                         debugger;
+                                                         for(var i=0; i < result.length; i++){
+                                                             document.getElementById("{!$Component.theBlock.thePageBlockSection.theFirstItem.accId}").innerHTML = result[i].Id;
+                                                             document.getElementById("{!$Component.theBlock.thePageBlockSection.theSecondItem.accNam}").innerHTML = result[i].Name;
+                                                             document.getElementById("{!$Component.theBlock.thePageBlockSection.theThirdItem.accPhone}").innerHTML = result[i].Phone;
+                                                         }
+                                                     }else if(event.type === 'exception'){
+                                                         document.getElementById("errors-js").innerHTML = event.message;
+                                                     }else{
+                                                         document.getElementById("errors-js").innerHTML = 'No Records Found..';
+                                                     }
+                                                 },{escape : true});
+    }
+    </script>
+    Account Name : <input id="accName" type="text" />
+    <button onclick="getAccountJS()">Get Account</button>
+    <div id="errors-js"></div>
+    
+    <apex:pageBlock id="theBLock">
+        <apex:pageBlockSection id="thePageBlockSection" columns="4">
+            <apex:pageBlockSectionItem id="theFirstItem">
+                <apex:outputText id="accId"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="theSecondItem" >
+                <apex:outputText id="accNam" />
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="theThirdItem" >
+                <apex:outputText id="accPhone" />
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

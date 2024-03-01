@@ -1,0 +1,58 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global"
+                controller="contactOpportunity2">
+    
+    <aura:attribute name="opportunities" type="Opportunity"
+                    default="{ 'sobjectType': 'Opportunity',
+                             'Name': '',
+                             'Order Number': '',
+                             'Amount': '',
+                             'Expected Revenue':''}"/>
+    
+    <aura:attribute name ="isTrueOpportunity" type ="Boolean" default ="false" />
+    
+    <lightning:card title="Create Opportunity : " iconName="standard:opportunity">
+        <p class="slds-p-horizontal_small">
+            <table class="slds-table slds-table--bordered slds-table--striped slds-table--cell-buffer slds-table--fixed-layout">
+                <thead>
+                    <tr class="slds-text-heading--label">
+                        
+                        
+                        <th scope="col"><div class="slds-truncate" title="Name">Name</div></th>
+                        <lightning:input aura:id="Name" name="Name"
+                                         label="Name"
+                                         value="{!v.opportunities.Name}">y
+                        </lightning:input>
+                        
+                        
+                        <th scope="col"><div class="slds-truncate" title="OrderNumber__c">Order Number</div></th>
+                        <lightning:input aura:id="OrderNumber__c" name="OrderNumber__c"
+                                         label="Order Number"
+                                         value="{!v.opportunities.OrderNumber__c}">
+                        </lightning:input>
+                        
+                        
+                        <th scope="col"><div class="slds-truncate" title="Amount">Amount</div></th>
+                        <lightning:input aura:id="Amount" name="Amount"
+                                         required="true" label="Amount"
+                                         value="{!v.opportunities.Amount}">
+                        </lightning:input>
+                        
+                        
+                        <th scope="col"><div class="slds-truncate" title="ExpectedRevenue">Expected Revenue</div></th>
+                        <lightning:input aura:id="ExpectedRevenue" name="ExpectedRevenue"
+                                         label="Expected Revenue"
+                                         value="{!v.opportunities.ExpectedRevenue}">
+                        </lightning:input>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>  
+                        <br/>
+                    </tr>
+                </tbody>
+                <lightning:button name="AddOpportunity" label="Add Opportunity" onclick="{!c.insertOpportunityjs}" variant="brand"></lightning:button>
+            </table>
+        </p>
+    </lightning:card>
+	
+</aura:component>

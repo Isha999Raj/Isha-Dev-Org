@@ -1,0 +1,27 @@
+<template>
+    <lightning-card title="Account List">
+        <template if:true={listOfAccount}>
+            <table class="slds-table slds-table_cell-buffer" style="margin-left: 18px; width: 500px;">
+
+                <thead>
+                    <!-- <tr class="slds-text-title_caps">
+                        <th scope="col">Name</th>
+                    </tr> -->
+                </thead>
+
+                <tbody>
+                    <template for:each={listOfAccount} for:item="account">
+                        <li key={account.Id}>
+                            <a href="#" onclick={handleAccountClick} data-account-id={account.Id}>{account.Name}</a>
+                        </li>
+                    </template>
+                </tbody>
+
+            </table>
+        </template>
+        <template if:true={error}>
+            <p>Error retrieving accounts: {error}</p>
+        </template>
+    </lightning-card>
+    
+</template>

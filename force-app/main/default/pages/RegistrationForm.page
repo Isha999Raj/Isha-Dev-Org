@@ -1,0 +1,334 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="CustomerPortal_Controller" >
+    <head>
+        <c:Libraries ></c:Libraries>
+        <style>
+            body {
+            background: #F5F5F5;
+            }
+            
+            .card-img-left {
+            width: 45%;
+            /* Link to your background image using in the property below! */
+            background: scroll center url('https://source.unsplash.com/WEQbe2jBg40/414x512');
+            background-size: cover;
+            }
+            
+            
+            .loadingBackground {
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            background: #F6F6F6;
+            z-index: 11111;
+            opacity: 0.7;
+            top: 0px;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            }
+            .loading {
+            top: 50%;
+            left: 50%;
+            margin: -50px 0px 0px -50px;
+            z-index: 111111;
+            position: fixed;
+            }
+        </style>
+        
+        <script>
+        
+        debugger;
+        var computerSkillList = JSON.parse('{!computerSkillList}');
+        var crownPickListVal = JSON.parse('{!crownPickListVal}');
+        var xRayProficiencyPickListVal = JSON.parse('{!xRayProficiencyPickListVal}');
+        var pmsKnowledgePickListVal = JSON.parse('{!pmsKnowledgePickListVal}');
+        var imageSoftwarePickListVal = JSON.parse('{!imageSoftwarePickListVal}');
+        //var candidateObj = JSON.parse('{!candidateRecord}');
+        //var userId = '{!$CurrentPage.parameters.id}';
+        
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope) {
+            debugger;
+            $scope.showSpinner = false;
+            $scope.computerSkillList = computerSkillList;
+            $scope.crownPickListVal = crownPickListVal;
+            $scope.xRayProficiencyPickListVal = xRayProficiencyPickListVal;
+            $scope.pmsKnowledgePickListVal = pmsKnowledgePickListVal;
+            $scope.imageSoftwarePickListVal = imageSoftwarePickListVal;
+            $scope.contactDetails = {};
+            
+            /*if(candidateObj && Array.isArray(candidateObj) && candidateObj.length > 0){
+                $scope.contactDetails = {Id: userId, FirstName: candidateObj[0].FirstName, LastName: candidateObj[0].LastName, Email: candidateObj[0].Email};
+            }*/
+            
+            $scope.saveContact = function(){
+                debugger;
+                $scope.showSpinner = true;
+                CustomerPortal_Controller.updateMutiPicListVal($scope.contactDetails,$scope.selectedValues,function (result, event) {
+                    if (event.status && result != null) {
+                        debugger;
+                        Swal.fire(
+                            '',
+                            'Requisition Form Submitted Successfully! Ondonte Team will get back to you shortly with the best match.',
+                            'success'
+                        );
+                        $scope.$apply();
+                        var sitePrefix = window.location.href.includes('/apex') ? '/apex' : '/CustomerDashboard';
+                            debugger;
+                            window.location.replace(window.location.origin + sitePrefix + '/CustomerPortal?id=' + result +'#/Home');
+                    }
+                    $scope.showSpinner=false;
+                }, { escape: false })
+            }
+            
+            $scope.selectedValues = [];
+            $scope.multiPickValue = function(staff){
+                debugger;
+                if($scope.selectedValues.includes(staff)){
+                    $scope.selectedValues.splice($scope.selectedValues.indexOf(staff),1); 
+                }else{
+                    $scope.selectedValues.push(staff);
+                }
+            }
+        });
+        </script>
+    </head>
+    
+    <body ng-app="myApp" ng-controller="myCtrl">
+        <div class="row mt-2 ">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <div class="card" style="margin-bottom: 25px;margin-top: 25px;">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-center"><h2>
+                            <b>Registration Form :-</b>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <h5>
+                                <b>BASIC DETAILS</b>
+                            </h5>
+                            <div class="col-md-6">
+                                <label class="control-label">First Name</label>
+                                <input name="firstname" placeholder="FirstName" class="form-control" type="text" ng-model="contactDetails.FirstName" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Last Name</label>
+                                <input name="lastname" placeholder="LastName" class="form-control" type="text" ng-model="contactDetails.LastName" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Email</label>
+                                <input name="Email" placeholder="Email" class="form-control" type="text" ng-model="contactDetails.Email" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Phone</label>
+                                <input name="Phone" placeholder="Phone" class="form-control" type="text" ng-model="contactDetails.Phone" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Mailing City</label>
+                                <input name="Mailing City" placeholder="Mailing City" class="form-control" type="Text" ng-model="contactDetails.MailingCity" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Mailing State</label>
+                                <input name="Mailing State" placeholder="Mailing State" class="form-control" type="Text" ng-model="contactDetails.MailingState" />
+                            </div>
+                        </div>
+                    </div>&nbsp;&nbsp;&nbsp;
+                    
+                    <div class="form-group">
+                        <div class="row">
+                            <h5>
+                                <b>ASSISTANT KEY SKILLS</b>
+                            </h5>
+                            <div class="col-md-6">
+                                <label class="control-label">Fabricate and Place Temporary Crowns</label>
+                                <input name="Fabricate and Place Temporary Crowns" placeholder="Fabricate and Place Temporary Crowns" class="form-check-input" type="checkbox" ng-model="contactDetails.Fabricate_and_Place_Temporary_Crowns__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Implants</label>
+                                <input name="Implants" placeholder="Implants" class="form-check-input" type="checkbox" ng-model="Implants__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Orthodontic Assistant Permit</label>
+                                <input name="Orthodontic Assistant Permit" placeholder="Orthodontic Assistant Permit" class="form-check-input" type="checkbox" ng-model="contactDetails.Orthodontic_Assistant_Permit__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Scan Imaging</label>
+                                <input name="Scan Imaging" placeholder="Scan Imaging" class="form-check-input" type="checkbox" ng-model="contactDetails.Scan_Imaging__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Cerec</label>
+                                <input name="Cerec" placeholder="Cerec" class="form-check-input" type="checkbox" ng-model="contactDetails.Cerec__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Zoom Bleaching</label>
+                                <input name="Zoom Bleaching" placeholder="Zoom Bleaching" class="form-check-input" type="checkbox" ng-model="contactDetails.Zoom_Bleaching__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">E4D</label>
+                                <input name="E4D" placeholder="E4D__c" class="form-check-input" type="checkbox" ng-model="contactDetails.E4D__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Inventory Control Ordering</label>
+                                <input name="Inventory Control Ordering" placeholder="Inventory Control Ordering" class="form-check-input" type="checkbox" ng-model="contactDetails.Inventory_Control_Ordering__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">6-Handed Chairside</label>
+                                <input name="6-Handed Chairside" placeholder="6-Handed Chairside" class="form-check-input" type="checkbox" ng-model="contactDetails.X6_Handed_Chairside__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">OMSA Permit</label>
+                                <input name="OMSA Permit" placeholder="OMSA Permit" class="form-check-input" type="checkbox" ng-model="contactDetails.OMSA_Permit__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Types Of Crowns</label>
+                                <select class="form-select" aria-label="Default select example" ng-model="contactDetails.Types_of_Crowns__c">
+                                    <option value="none" ng-selected="true">--None--</option>
+                                    <option ng-repeat="staff in crownPickListVal">{{staff}}</option>
+                                </select> 
+                            </div>
+                        </div>
+                    </div>&nbsp;&nbsp;&nbsp;
+                    
+                    <div class="form-group">
+                        <div class="row">
+                            <h5>
+                                <b>COMPUTER KEY SKILLS</b>
+                            </h5>
+                            <div>
+                                <div class="row">
+                                    
+                                    <div class="col-md-6" ng-repeat="staff in computerSkillList">
+                                        <div >
+                                            <Label>{{staff}}</Label>
+                                            <input name="staff" type="checkbox" ng-click="multiPickValue(staff)" />
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>&nbsp;&nbsp;&nbsp;
+                    
+                    <div class="form-group">
+                        <div class="row">
+                            <h5>
+                                <b>DENTAL KEY SKILLS</b>
+                            </h5>
+                            <div class="col-md-6">
+                                <label class="control-label">Coronal Polishing</label>
+                                <input name="Coronal Polishing" placeholder="Coronal Polishing" class="form-check-input" type="checkbox" ng-model="contactDetails.Coronal_Polishing__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Invisalign</label>
+                                <input name="Invisalign" placeholder="Invisalign" class="form-check-input" type="checkbox" ng-model="contactDetails.Invisalign__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Intraoral Camera</label>
+                                <input name="Intraoral Camera" placeholder="Intraoral Camera" class="form-check-input" type="checkbox" ng-model="contactDetails.Intraoral_Camera__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Applying Pit/Fissure Sealants</label>
+                                <input name="Applying Pit/Fissure Sealants" placeholder="Applying Pit/Fissure Sealants" class="form-check-input" type="checkbox" ng-model="contactDetails.Applying_Pit_Fissure_Sealants__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">PMS Knowledge</label>
+                                <select class="form-select" aria-label="Default select example" ng-model="contactDetails.PMS_Knowledge__c">
+                                    <option value="none" ng-selected="true">--None--</option>
+                                    <option ng-repeat="staff in pmsKnowledgePickListVal">{{staff}}</option>
+                                </select> 
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">X-ray Proficiency</label>
+                                <select class="form-select" aria-label="Default select example" ng-model="contactDetails.X_ray_Proficiency__c">
+                                    <option value="none" ng-selected="true">--None--</option>
+                                    <option ng-repeat="staff in xRayProficiencyPickListVal">{{staff}}</option>
+                                </select> 
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Image X-ray Software</label>
+                                <select class="form-select" aria-label="Default select example" ng-model="contactDetails.Image_X_ray_Software__c">
+                                    <option value="none" ng-selected="true">--None--</option>
+                                    <option ng-repeat="staff in imageSoftwarePickListVal">{{staff}}</option>
+                                </select> 
+                            </div>
+                        </div>
+                    </div>&nbsp;&nbsp;&nbsp;
+                    
+                    <div class="form-group">
+                        <div class="row">
+                            <h5>
+                                <b>FRONT OFFICE KEY SKILLS</b>
+                            </h5>
+                            <div class="col-md-6">
+                                <label class="control-label">Formal Software Trained</label>
+                                <input name="Formal Software Trained" placeholder="Formal Software Trained" class="form-check-input" type="checkbox" ng-model="contactDetails.Formal_Software_Trained__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Post Insurance Payments</label>
+                                <input name="Post Insurance Payments" placeholder="Post Insurance Payments" class="form-check-input" type="checkbox" ng-model="contactDetails.Post_Insurance_Payments__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Create Patient Files</label>
+                                <input name="Create Patient Files" placeholder="Create Patient Files" class="form-check-input" type="checkbox" ng-model="contactDetails.Create_Patient_Files__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Over the Counter Collection</label>
+                                <input name="Over the Counter Collection" placeholder="Over the Counter Collection" class="form-check-input" type="checkbox" ng-model="contactDetails.Over_the_Counter_Collection__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Appointment Scheduling</label>
+                                <input name="Appointment Scheduling" placeholder="Appointment Scheduling" class="form-check-input" type="checkbox" ng-model="contactDetails.Appointment_Scheduling__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Prepare Daily Deposit</label>
+                                <input name="Prepare Daily Deposit" placeholder="Prepare Daily Deposit" class="form-check-input" type="checkbox" ng-model="contactDetails.Prepare_Daily_Deposit__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Accounts Payable</label>
+                                <input name="Accounts Payable" placeholder="Accounts Payable" class="form-check-input" type="checkbox" ng-model="contactDetails.Accounts_Payable__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Prepare Day Sheet</label>
+                                <input name="Prepare Day Sheet" placeholder="Prepare Day Sheet" class="form-check-input" type="checkbox" ng-model="contactDetails.Prepare_Day_Sheet__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">AR Management</label>
+                                <input name="AR Management" placeholder="AR Management" class="form-check-input" type="checkbox" ng-model="contactDetails.AR_Management__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Recall Maintenance</label>
+                                <input name="Recall Maintenance" placeholder="Recall Maintenance" class="form-check-input" type="checkbox" ng-model="contactDetails.Recall_Maintenance__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Insurance Benefit Coordination</label>
+                                <input name="Insurance Benefit Coordination" placeholder="Insurance Benefit Coordination" class="form-check-input" type="checkbox" ng-model="contactDetails.Insurance_Benefit_Coordination__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Create Treatment Plans in System</label>
+                                <input name="Create Treatment Plans in System" placeholder="Create Treatment Plans in System" class="form-check-input" type="checkbox" ng-model="contactDetails.Create_Treatment_Plans_in_System__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Insurance Verification and Pre Auth</label>
+                                <input name="Insurance Verification and Pre Auth" placeholder="Insurance Verification and Pre Auth" class="form-check-input" type="checkbox" ng-model="contactDetails.Insurance_Verification_and_Pre_Auth__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Treatment Presentation</label>
+                                <input name="Treatment Presentation" placeholder="Treatment Presentation" class="form-check-input" type="checkbox" ng-model="contactDetails.Treatment_Presentation__c" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Run Financial Reports</label>
+                                <input name="Run Financial Reports" placeholder="Run Financial Reports" class="form-check-input" type="checkbox" ng-model="contactDetails.Run_Financial_Reports__c" />
+                            </div>
+                        </div>
+                    </div>&nbsp;&nbsp;&nbsp;
+                    <div class="card-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" ng-click="saveContact()">Submit</button>&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</apex:page>

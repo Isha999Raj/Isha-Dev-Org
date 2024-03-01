@@ -1,0 +1,23 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+    <html>
+        <head>
+            <c:Libraries ></c:Libraries>
+            <script>
+            var app = angular.module('app',['ngRoute']);
+            app.config(['$routeProvider', function($routeProvider){
+                $routeProvider
+                .when('/first-msg', {
+                    templateUrl: '<strong> this is first msg </strong>'
+                })
+                .when('/second-msg', {
+                    template: '<strong> this is second msg </strong>'
+                })  
+            }]);
+            </script>
+        </head>
+        <body ng-app="app">
+         an app
+         <ng-view></ng-view>
+        </body>
+    </html>
+</apex:page>

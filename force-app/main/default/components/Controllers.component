@@ -1,0 +1,107 @@
+<apex:component >
+      <script> 
+      angular.module('number', [])
+    .directive('number', function () {
+        return {
+            require: 'ngModel',
+            restrict: 'A',
+            link: function (scope, element, attrs, ctrl) {
+                ctrl.$parsers.push(function (input) {
+                    if (input == undefined) return ''
+                    var inputNumber = input.toString().replace(/[^0-9]/g, '');
+                    if (inputNumber != input) {
+                        ctrl.$setViewValue(inputNumber);
+                        ctrl.$render();
+                    }
+                    return inputNumber;
+                });
+            }
+        };
+});
+
+angular.module('decimal', [])
+    .directive('decimal', function () {
+        return {
+            require: 'ngModel',
+            restrict: 'A',
+            link: function (scope, element, attrs, ctrl) {
+                ctrl.$parsers.push(function (input) {
+                    if (input == undefined) return ''
+                    var inputNumber = input.toString().replace(/[^0-9/.]/g, '');
+                    if (inputNumber != input) {
+                        ctrl.$setViewValue(inputNumber);
+                        ctrl.$render();
+                    }
+                    return inputNumber;
+                });
+            }
+        };
+});
+angular.module('specialChar', [])
+.directive('specialChar', function() {
+    return {
+        require: 'ngModel',
+        restrict: 'A',        
+        link: function (scope, element, attrs, ctrl) {
+                ctrl.$parsers.push(function (input) {
+                    if (input == undefined) return ''
+                    var inputNumber = input.toString().replace(/[^0-9/.]/g, '');
+                    if (inputNumber != input) {
+                        ctrl.$setViewValue(inputNumber);
+                        ctrl.$render();
+                    }
+                    return inputNumber;
+                });
+            }
+    };
+});
+angular.module('text', [])
+.directive('text', function () {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function (scope, element, attrs, ctrl) {
+            ctrl.$parsers.push(function (input) {
+                if (input == undefined) return ''
+                var inputText = input.toString();
+                inputText=inputText ? inputText.replace(/&amp;/g,'&').replace(/&#39;/g,'\'').replaceAll('&amp;amp;','&').replaceAll('&amp;gt;','>').replaceAll('&lt;','<').replaceAll('lt;','<').replaceAll('&gt;','>').replaceAll('gt;','>').replaceAll('&amp;','&').replaceAll('amp;','&').replaceAll('&quot;','\'') : inputText;
+                if (inputText != input) {
+                    ctrl.$setViewValue(inputText);
+                    ctrl.$render();
+                }
+                return inputText;
+            });
+        }
+    };
+});
+angular.module('textarea', [])
+    .directive('textarea', function () {
+        return {
+            require: 'ngModel',
+            restrict: 'A',
+            link: function (scope, element, attrs, ctrl) {
+                
+                ctrl.$parsers.push(function (input) {
+                    if (input == undefined) return ''
+                
+                    var inputText = input.toString().replace(/[^a-zA-Z\.\s]/g, '');
+                    if (inputText != input) {
+                	
+                        ctrl.$setViewValue(inputText);
+                        ctrl.$render();
+                    }
+                    return inputText;
+                });
+            }
+        };
+    });
+    
+    
+        angular.module('cp_app', ['ngRoute', 'textAngular','number','text','textarea','decimal','specialChar']);
+        
+    </script>
+    <script src="{!$Resource.CustomerPortalCSS}"/>
+    <script src="{!$Resource.CustomerPortal}"/> 
+    <script src="{!$Resource.Home}"/>
+      
+</apex:component>

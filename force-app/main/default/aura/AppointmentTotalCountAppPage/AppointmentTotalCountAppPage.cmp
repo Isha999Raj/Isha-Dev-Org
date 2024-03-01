@@ -1,0 +1,57 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="getDashboardMetricsForContact">
+    <aura:attribute name="recordId" type="String" default="0035j00001OUToEAAX"/>
+    <aura:attribute name="metrics" type="DashboardMetricsWrapper"/>
+    <aura:attribute name="appList" type="Appointment__c[]"/>
+    
+    
+    <aura:handler  name="init" value="{!this}" action="{!c.doinit}"/>
+    <div class="master" style="background-color: aliceblue;border-radius: 5px;padding: 1%;">
+        <div class="outer-container">
+            <div class="c-container">
+                <lightning:layout multipleRows="true">
+                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                        <div class="slds-card">
+                            <header class="slds-card__header">
+                                <h2 class="slds-text-heading_small slds-truncate">Total Appointment</h2>
+                            </header>
+                            <div class="slds-card__body">
+                                <div class="number">{!v.metrics.totalAppointments}</div>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                        <div class="slds-card">
+                            <header class="slds-card__header">
+                                <h2 class="slds-text-heading_small slds-truncate">In Progress Appointment</h2>
+                            </header>
+                            <div class="slds-card__body">
+                                <!--a onclick="{!c.navigateToComponent}" data-status="InProgress" class="clickable-text">{!v.metrics.inProgressAppointments}</a-->
+                                <div class="number">{!v.metrics.inProgressAppointments}</div>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                        <div class="slds-card">
+                            <header class="slds-card__header">
+                                <h2 class="slds-text-heading_small slds-truncate">Upcoming Appointment</h2>
+                            </header>
+                            <div class="slds-card__body">
+                                <div class="number">{!v.metrics.upcomingAppointments}</div>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                        <div class="slds-card">
+                            <header class="slds-card__header">
+                                <h2 class="slds-text-heading_small slds-truncate">Cancelled/Rescheduled Appointment</h2>
+                            </header>
+                            <div class="slds-card__body">
+                                <div class="number">{!v.metrics.cancelledOrRescheduledAppointments}</div>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        </div>
+    </div>
+</aura:component>

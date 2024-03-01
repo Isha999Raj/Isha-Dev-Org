@@ -1,0 +1,56 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickAction" access="global" 
+                controller="contactOpportunity2">
+    
+    <aura:attribute name="Contacts" type="contact"
+                    default="{ 'sobjectType': 'Contact',
+                             'First Name': '',
+                             'Last Name': '',
+                             'Email': '',
+                             'Phone': ''}"/>
+    
+    
+    <aura:attribute name ="isTrueContact" type ="Boolean" default ="true" />
+    
+    
+    <lightning:card title="Create Contact : " iconName="standard:contact">
+        <p class="slds-p-horizontal_small">
+            <table class="slds-table slds-table--bordered slds-table--striped slds-table--cell-buffer slds-table--fixed-layout">
+                <thead>
+                    <tr class="slds-text-heading--label">
+                        
+                        
+                        <th scope="col"><div class="slds-truncate" title="FirstName">First Name</div></th>
+                        <lightning:input aura:id="FirstName" name="FirstName"
+                                         label="First Name"
+                                         value="{!v.Contacts.FirstName}">
+                        </lightning:input>
+                        <br/>
+                        
+                        
+                        <th scope="col"><div class="slds-truncate" title="LastName">Last Name</div></th>
+                        <lightning:input aura:id="LastName" name="LastName"
+                                         required="true" label="Last Name"
+                                         value="{!v.Contacts.LastName}">
+                        </lightning:input>
+                        
+                        <th scope="col"><div class="slds-truncate" title="Email">Email</div></th>
+                        <lightning:input aura:id="Email" name="Email"
+                                         label="Email"
+                                         value="{!v.Contacts.Email}">y
+                        </lightning:input>
+                        
+                        
+                        <th scope="col"><div class="slds-truncate" title="Phone">Phone</div></th>
+                        <lightning:input aura:id="Phone" name="Phone"
+                                         label="Phone"
+                                         value="{!v.Contacts.Phone}">
+                        </lightning:input>
+                    </tr>
+                </thead>
+                <lightning:button name="AddContact" label="Add Contact" onclick="{!c.insertContactjs}" variant="brand"></lightning:button> 
+            </table>
+        </p>
+    </lightning:card>
+    
+    
+</aura:component>

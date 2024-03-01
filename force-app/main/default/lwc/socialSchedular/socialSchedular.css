@@ -1,0 +1,35 @@
+.monthnavigation{
+	width: Hug (964px);
+	height: Hug (36px);
+	top: 24px;
+	left: 36px;
+	gap: 8px;
+}
+.monthnavigation.arrow{
+	width: 32px;
+	height: 32px;
+
+}
+.monthnavigation.arrow.design{
+	width: 20.114286422729492px;
+	height: 20.114286422729492px;
+	top: 7.48583984375px;
+	left: 3.6572265625px;
+	padding: 1.5472527742385864px 4.603076457977295px 1.537582278251648px 5.415384769439697px;
+}
+
+ .container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+
+    .box {
+        flex: 0 0 80%;
+        background-color: lightblue;
+    }
+
+    .sidebox {
+        flex: 1;
+        background-color: lightgreen;
+    }

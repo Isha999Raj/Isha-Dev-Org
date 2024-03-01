@@ -1,0 +1,78 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="CustomerPortal_Controller">
+    <html>
+        <head>
+            <c:Libraries />
+            <script>
+                var tabValues = JSON.parse('{!tabValues}');
+                var userId = '{!$CurrentPage.parameters.id}';
+            </script>
+    
+            <apex:stylesheet value="{!$Resource.CustomerPortalCSS}" />
+            <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js">
+            </script>
+            <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+            <link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css'/>
+            <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-sanitize.min.js'></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.1.2/textAngular.min.js'></script>
+            <c:Controllers />
+        </head>
+    
+        <body ng-app="cp_app" ng-controller="cp_dashboard_ctrl" style="background-color: #ffffff; !important;">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="wrapper px-5">
+                    <a class="navbar-brand p-0" href="#/Home">
+                        <apex:image url="{!$Resource.Logo}" alt="KINSHIP" styleClass="brand-logo"/>
+                    </a>
+    
+                    <div class="">
+                        <!-- <li class="nav-link text-center">Appointment Deadline</li> -->
+                    </div>
+    
+                    <button class="navbar-toggler float-end m-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fa fa-bars" />
+                    </button>
+    
+                    <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavDarkDropdown">
+                        <ul class="navbar-nav mt-2">
+                            <li class="nav-item pe-5">
+                                <a class="nav-link" href="#/Home" ng-class="{activeColor:activeTab==0}">Home</a>
+                            </li>
+                            
+                             <li class="nav-item pe-5">
+                            </li>
+                    </ul>
+    
+                    <div class="d-flex text-align-center">
+                        <div class="dropdown">
+                            <i class="far fa-user fa-2x" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            </i>
+                            <ul class="dropdown-menu" style="width: 300px" aria-labelledby="dropdownMenuButton1">                                                            
+                              <li><a class="dropdown-item pe-5"><i class="fa-solid fa-user me-3"></i>Test Name</a></li>
+                              <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                              <li><a class="dropdown-item pe-5"><i class="fa-solid fa-at me-3"></i>testemail@mailinator.com</a></li>
+                              <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li>
+                                <a class="dropdown-item pe-5" ng-click=""><i class="fa-solid fa-right-from-bracket me-3"></i>Logout</a>
+                            </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        </div>
+                    </div>
+            </nav>
+    
+            <div style="background-color: #fff;">  
+                <ng-view>
+                </ng-view>
+            </div>
+        </body>
+    </html>
+    
+</apex:page>

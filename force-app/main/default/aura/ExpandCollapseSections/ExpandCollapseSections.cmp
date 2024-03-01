@@ -1,0 +1,8 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" controller="ExpandCollapseSectionsHelper" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="conatactName" type="string" default=""/>
+    
+    <lightning:button variant="brand" label="Get Contact Name " title="" onclick="{! c.getContactName }" />
+    <br/><br/>
+    {!v.conatactName}
+</aura:component>

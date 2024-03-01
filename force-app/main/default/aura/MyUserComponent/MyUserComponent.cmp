@@ -1,0 +1,7 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" controller="MyUserController" access="global" >
+    
+    <aura:handler name="init" action="{!c.getUsersList}" value="{!this}" />
+    <aura:attribute name="userList" type="List" />
+    
+	
+</aura:component>

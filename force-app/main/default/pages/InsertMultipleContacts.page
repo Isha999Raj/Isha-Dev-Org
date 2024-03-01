@@ -1,0 +1,52 @@
+<apex:page controller="InsertMultipleContacts" standardStylesheets="false" sidebar="false" showHeader="false">
+    <html>
+        <head>
+            <c:Libraries ></c:Libraries>
+            
+            <script>
+            
+            var app = angular.module('myApp', []);
+            app.controller('myCtrl', function($scope) {
+                debugger;
+                
+                $scope.contactDetails = [{'FirstName': '', 'LastName': '', 'Email': ''}];
+                
+                $scope.addRow = function(){
+                    $scope.addArray = [];
+                    $scope.contactDetails.push($scope.addArray);
+                },
+                
+                $scope.deleteRow = function(index){
+                    $scope.contactDetails.splice(index,1);
+                }
+            });
+                    </script>
+            
+            <body style="margin: 2%" ng-app="myApp" ng-controller="myCtrl">
+                <table class="table-bordered table-striped" style="width: 100%">
+                    <tr style="background-color:#ccc;">
+                        <th>BASIC DETAILS :</th>
+                    </tr>
+                    
+                    <tr>
+                        <th>Account Name</th>
+                        <th>Website</th>
+                        <th>Fax</th>
+                    </tr>
+                    
+                    <tr ng-repeat="contactDetail in contactDetails">
+                        <td><input name="firstname" placeholder="FirstName" class="form-control" type="text" ng-model="contactDetail.FirstName" /></td>
+                        <td><input name="lastname" placeholder="LastName" class="form-control" type="text" ng-model="contactDetail.LastName" /></td>
+                        <td><input name="email" placeholder="Email" class="form-control" type="text" ng-model="contactDetail.Email" /></td>
+                    </tr>
+                </table>
+                
+                <div class="card-footer d-flex justify-content-center">
+                    <button type="button" ng-click="addRow()" class="btn btn-primary">ADD</button>
+                    <button type="button" ng-click="deleteRow()" class="btn btn-danger">DELETE</button>
+                </div>
+            </body>
+        </head>
+    </html>
+    
+</apex:page>

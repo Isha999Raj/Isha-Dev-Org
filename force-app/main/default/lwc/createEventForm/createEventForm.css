@@ -1,0 +1,112 @@
+@media only screen and (max-width:1620px){
+    .contentHolder{
+        margin-top: 3%;
+        margin-left:-10%;
+    }
+}
+
+@media only screen and (min-width:1620px){
+    .contentHolder{
+        margin-top: 3%;
+    }
+}
+
+
+.backbutton{
+	width: 15%;
+	height: Hug (22px);
+	padding: 6px 11.918919563293457px 6px 11.918919563293457px;
+	border-radius: 5.297297477722168px;
+	gap: 6.621622085571289px;
+	background-color: white;
+	color: #7c99ff;
+	border-color: #7c99ff;
+	position: relative;
+	z-index: 0;
+}
+
+.createEventButton{
+	width: 15%;
+	height: Hug (22px);
+	padding: 6px 11.918919563293457px 6px 11.918919563293457px;
+	border-radius: 5.297297477722168px;
+	gap: 6.621622085571289px;
+	background-color: #7c99ff;
+	color: white;
+	border: none;
+	position: relative;
+	z-index: 0;
+}
+.form-control {
+    font-size: 15px;
+    min-height: 40px;
+    background: #ffffff;
+    width: 100%;
+    border: none;
+    color: #676767 !important;
+    font-size: 13px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.slds-input{
+	min-height: 35px;
+}
+
+.inputFields{
+	max-width: 21rem;
+	min-width: 21rem;
+}
+
+.centered-heading {
+    font-size: 21px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.checkbox-group {
+    padding: 10px;
+	border: 1px;
+	position: relative;
+	z-index: 1;
+}
+
+.checkbox-item {
+    /* display: flex; */
+    align-items: center;
+    background-color: transparent;
+    padding: 5px;
+    transition: background-color 0.3s;
+	border: 1px;
+}
+
+.checkbox-item:hover {
+    background-color: #6889ff;
+}
+
+ .custom-combobox-option:hover {
+            background-color: #0070d2 !important;
+            color: white !important;
+        }
+
+.black-label-button .slds-button__label {
+    color: black;
+}
+
+
+.checkbox-card {
+    position: absolute;
+    background-color: #fff; 
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    z-index: 2; 
+    margin-top: -10px; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+	width: 200px;
+}
+
+.alignCenterVertical{
+    align-items: center;
+}

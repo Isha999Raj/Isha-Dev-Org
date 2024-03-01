@@ -1,0 +1,70 @@
+<aura:component controller="calculatorController">
+    <!-- 1. With the help of aura id finding values :
+    
+    <br/>
+    <div>
+        <b>CALCULATOR EXAMPLE :</b>
+    </div>
+    <div>
+        <div>
+            <ui:inputNumber label="Enter First Number" aura:id="firstNumber"/>
+        </div><br/>
+        <div>
+            <ui:inputNumber label="Enter Second Number" aura:id="secondNumber"/>
+        </div><br/>
+        <div>
+            <ui:inputNumber label="RESULT : " aura:id="Result"/>
+        </div><br/>
+        <div>
+            <ui:button label="Click" press="{!c.Calculate}" class="button"/>
+        </div>
+    </div> -->
+    
+    <!-- 2. With the help of attribute finding values :
+    
+    <aura:attribute name="FirstNumber" type="decimal"/>
+    <aura:attribute name="SecondNumber" type="decimal"/>
+    <aura:attribute name="RESULT" type="decimal"/>
+    <br/>
+    <div>
+        <b>CALCULATOR EXAMPLE :</b>
+    </div>
+    <div>
+        <div>
+            <ui:inputNumber label="Enter FirstNumber" value="{!v.FirstNumber}"/>
+        </div><br/>
+        <div>
+            <ui:inputNumber label="Enter SecondNumber" value="{!v.SecondNumber}"/>
+        </div><br/>
+        <div>
+            <ui:inputNumber label="RESULT : " value="{!v.RESULT}"/>
+        </div><br/>
+        <div>
+            <ui:button label="Click" press="{!c.Calculate}" class="button"/>
+        </div>
+    </div> -->
+    
+    <!-- 3. With the help of Apex method/controller finding values : -->
+    
+    <aura:attribute name="FirstNumber" type="decimal"/>
+    <aura:attribute name="SecondNumber" type="decimal"/>
+    <aura:attribute name="RESULT" type="decimal"/>
+    <br/>
+    <div>
+        <b>CALCULATOR EXAMPLE :</b>
+    </div>
+    <div>
+        <div>
+            <ui:inputNumber label="Enter FirstNumber" value="{!v.FirstNumber}"/>
+        </div><br/>
+        <div>
+            <ui:inputNumber label="Enter SecondNumber" value="{!v.SecondNumber}"/>
+        </div><br/>
+        <div>
+            <ui:inputNumber label="RESULT : " value="{!v.RESULT}"/>
+        </div><br/>
+        <div>
+            <ui:button label="Click" press="{!c.Calculate}" class="button"/>
+        </div>
+    </div>
+</aura:component>

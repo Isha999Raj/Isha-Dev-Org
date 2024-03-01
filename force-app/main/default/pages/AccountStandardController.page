@@ -1,0 +1,14 @@
+<apex:page standardController="Account" recordSetVar="accRec">
+<apex:form >
+        <apex:pageBlock title="List of all Accounts:">
+            <apex:pageBlockTable value="{!accRec}" var="acc">
+                <apex:column value="{!acc.Name}"/>
+                <apex:column value="{!acc.Id}"/>
+                <apex:column value="{!acc.Industry}"/>
+                <apex:column >
+                    <apex:inputField value="{!acc.Phone}"/>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+</apex:form>
+</apex:page>

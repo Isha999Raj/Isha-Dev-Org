@@ -1,0 +1,15 @@
+<!--This component(not parent component) is wrapping the actual component -->
+
+<aura:component >
+    
+    <!-- includeFacets = "true" means this handler will be able to handle this event -->
+	<aura:handler name="totalIncomeComponentEvent" event="c:LightningComponentEvent" action="{!c.handleTotalIncomeComponentEvent}" includeFacets="true"></aura:handler>
+
+    <div class="wrapperComponent">
+        Wrapper Component Section Begin.
+        
+        <!-- {!v.body} is replaced by <c:LightningEventsComp1 /> -->
+        {!v.body} 
+        Wrapper Component Section End.
+    </div>
+</aura:component>

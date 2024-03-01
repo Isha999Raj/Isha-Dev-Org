@@ -1,0 +1,66 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" controller="angularEx">
+    <html>
+        <head>
+            <script>
+            for(let i=0;i<5;i++)
+                {
+                    addElement();
+                    }
+        function createContact()
+        {
+          var fn=document.getElementById("fname").value;
+          var ln=document.getElementById("lname").value;
+          var email=document.getElementById("email").value;
+          debugger;
+          Visualforce.remoting.Manager.invokeAction(
+          '{!$RemoteAction.angularEx.createContact}',
+           fn,ln,email,
+           function handleResult(result,event){
+           alert(result);
+        }
+        );
+        }
+            function addElement()
+            {
+                var newDiv=document.createElement("div");
+                var newContent = document.createTextNode("Hi there and greetings!");
+                newDiv.appendChild(newContent);
+                varDiv.appendChild(newContent);
+                var currentDiv = document.getElementById("div1");
+                document.body.insertBefore(newDiv, currentDiv);
+                }
+           
+        </script>
+        </head>
+        <body>
+            <div style="Margin : 2% 2%">
+                
+                <input type="text" class="form-control" placeholder="Enter Name" name="FirstName" id="fname" ng-model="fn"/>
+                <input type="text" class="form-control" placeholder="Enter Name" name="LastName" id="lname" ng-model="ln"/>
+                <input type="text" class="form-control" placeholder="Enter Email" name="Email" id="email" ng-model="email"/>
+                <button onclick ="createContact()" type="submit">Submit</button>
+            </div>
+            <div id="div1">
+                
+            </div>
+          <apex:form >
+                <apex:pageBlock >
+                    <apex:pageBlockTable value="{!conRec}" var="con">
+                        <apex:column >
+                            <apex:inputField value="{!con.FirstName}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:inputField value="{!con.LastName}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:inputField value="{!con.email}"/>
+                        </apex:column>
+                        
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+            </apex:form>
+            
+        </body>
+    </html>
+    
+</apex:page>

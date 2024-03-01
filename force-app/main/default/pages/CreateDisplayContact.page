@@ -1,0 +1,84 @@
+<apex:page controller="CreateDisplayContact" standardStylesheets="false" sidebar="false">
+    <html ng-app="app" ng-controller="ctrl">
+        <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"/>
+             <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+             <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+             <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+        </head>
+
+        <body style="margin: 2%">
+            <input type="text" id="firstname" class="form-control" placeholder="First Name" ng-model="FirstName" />&nbsp;
+            <input type="text" id="lastname" class="form-control" placeholder="Last Name" ng-model="LastName" />&nbsp;
+            <input type="text" id="email" class="form-control" placeholder="Email" ng-model="Email" />&nbsp;
+            <button type="button" ng-click="createContacts()" class="btn btn-primary"> SUBMIT </button>
+
+            <table class="table-bordered table-striped" style="width: 100%">
+                <thead>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                </thead>
+                <tr ng-repeat = "eachRec in allContacts">
+                    <td>{{ eachRec.ID }}</td>
+                    <td>{{ eachRec.FirstName }}</td>
+                    <td>{{ eachRec.LastName }}</td>
+                    <td>{{ eachRec.Email }}</td>
+                </tr>
+            </table>
+        </body>
+
+        <script>
+            
+            var app = angular.module('app',[]);
+            app.controller('ctrl',function($scope){
+                $scope.FirstName = '';
+                $scope.LastName = '';
+                $scope.Email = '';
+                $scope.allContacts = [];
+
+                //FETCH ALL CONTACTS FROM ORG
+                $scope.getAllContacts = function(){
+                    Visualforce.remoting.Manager.invokeAction(
+                        'CreateDisplayContact.displayContact',
+                        function(result,event){
+                            if(event.status){
+                                $scope.allContacts = result;   
+                                $scope.$apply();
+                            } else if (event.type === 'exception'){
+
+                            } else {
+
+                            }
+                        },
+                        {escape: true}
+                    );
+                }
+
+                //CREATE CONTACT
+                $scope.getAllContacts();
+                $scope.createContacts = function(){
+                    Visualforce.remoting.Manager.invokeAction(
+                        'CreateDisplayContact.createContact',
+                        $scope.FirstName, $scope.LastName, $scope.Email,
+                        function(result, event){
+                            if(event.status){
+                                $scope.allContacts.push(result);
+                                $scope.getAllContacts();
+                                $scope.$apply();
+                                alert(result);
+                            } else if (event.type === 'exception'){
+
+                            } else {
+
+                            }
+                        },
+                        {escape: true}
+                    );
+                }
+            });           
+        </script>
+    </html>
+</apex:page>

@@ -1,0 +1,20 @@
+<!-- PARENT COMPONENT -->
+
+<aura:component >
+    <aura:attribute name="totalIncome" type="decimal" default="0"></aura:attribute>
+    
+    <!-- PARENT HANDLER FOR THE SAME EVENT -->
+    <aura:handler name="totalIncomeComponentEvent" event="c:LightningComponentEvent" action="{!c.handleTotalIncomeComponentEvent}"></aura:handler>
+    
+    Outer Component
+    <div class="innerComponent">
+        Inner Component Section Begin
+        
+        <c:LightningEventsCompWrapper>
+            <c:LightningEventsComp1 />
+        </c:LightningEventsCompWrapper>
+        
+        Inner Component Section End
+    </div>
+    <b class="totalIncome">Total Income = {!v.totalIncome}</b>
+</aura:component>

@@ -1,0 +1,35 @@
+<!-- SOURCE/CHILD COMPONENT WHERE EVENT IS REGISTERED -->
+
+<aura:component >
+    <aura:attribute name="Incomes" type="object" />
+    <aura:attribute name="myColumns" type="List" />
+    <aura:registerEvent name="totalIncomeComponentEvent" type="c:LightningComponentEvent"></aura:registerEvent>
+    
+    <!-- REGISTERED EVENT -->
+    <aura:handler name="totalIncomeComponentEvent" event="c:LightningComponentEvent" action="{!c.handleRegisteredComponentEvent}"></aura:handler>
+    
+    <!-- HANDLER TO HANDLE THIS EVENT(LightningComponentEvent) -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
+    
+    <lightning:card title="Income Calculator" iconName="standard:account">
+        <aura:set attribute="actions">
+            <lightning:button label="Show/Hide Income Form" onclick="{!c.toggleIncomeForm}"></lightning:button>
+        </aura:set>
+        <p class="slds-p-horizontal_small">
+            <div aura:id="incomeForm" class="hide">
+                <lightning:input aura:id="source" name="source" required="true" label="Income source"></lightning:input>
+                <lightning:input aura:id="amount" name="amount" required="true" label="Amount"></lightning:input>
+                <br/>
+                
+                <!-- LightningComponentEvent (REGISTERED EVENT) IS FIRED BY THIS BUTTON -->
+                <lightning:button name="AddIncome" label="Add Income" onclick="{!c.AddIncome}" variant="brand"></lightning:button>
+            </div>
+            <br />
+            <lightning:datatable data="{!v.Incomes}" 
+                                 columns="{!v.myColumns}"
+                                 keyField="sno" />
+            <br />
+            <lightning:button name="CalculateIncome" label="Calculate Total Income" onclick="{!c.fireTotalCompEvent}" variant="brand" ></lightning:button>
+        </p>
+     </lightning:card>
+</aura:component>
